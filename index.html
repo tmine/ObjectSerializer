@@ -2,35 +2,65 @@
 <head>
 	<script type="text/javascript" src="JSThread.js"></script>
 </head>
+<body>
+	<div id="0" style="border: solid 1px black; height: 20px; overflow: hidden;"></div>
 
-<script>
+	<script>
+	
+	function isFunction(functionToCheck) {
+		var getType = {};
+		return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
+	
+	function isObject(objToCheck) {
+		var getType = {};
+		return objToCheck && getType.toString.call(objToCheck) === '[object Object]';
+	}
+	
+	function getSourceOfObject(obj){
+		var string = "";
+		string += "(function(){ var obj = " + obj.constructor + "\n";
+		for(var c in obj){
+			if(isFunction(obj[c])){
+				string += "obj." + c + " = " + obj[c] + ";\n";
+			} else if(isObject(obj[c])){
+				string += "obj." + c + " = " + getSourceOfObject(obj[c]) + ";\n";
+			} else {
+				string += "obj." + c + " = " + obj[c] + ";\n";
+			}
+		}
+		string += "return obj;})();";
+		return string;
+	}
+	
 
-var MyRunnable = (function () {
-    function MyRunnable() {
-        this.i = 0;
-    }
-    MyRunnable.prototype.run = function () {
-        if(this.i >= 100) {
-            return 0;
-        }
-        console.log(this.i);
-        this.i++;
-    };
-    return MyRunnable;
-})();
+	
+	var MyRunnable = (function () {
+	    function MyRunnable() {
+	    	this.i = 0;
+	    }
+	    MyRunnable.prototype.run = function () {
+	        if(this.i >= 40) {
+	            return 0;
+	        }
+	        document.getElementById("0").innerHTML += "<div style='width: 20px; border: solid 1px black; display: inline-block;'>" + this.i + "</div>";
+	        this.i++;
+	    };
+	    return MyRunnable;
+	})();
 
-var runnable = new MyRunnable();
-var runnable2 = new MyRunnable();
-
-var thread = new Thread(runnable);
-var thread2 = new Thread(runnable2);
-thread2.setPriority(ThreadPriority.LOW);
-
-thread.start();
-thread2.start();
-
-setTimeout(function(){thread2.stop();}, 2000);
-
-</script>
-
+	// create new Thread
+	var mythread = new Thread(new MyRunnable());
+	
+	// serialize Thread
+	var source = getSourceOfObject(mythread);
+	
+	// deserialize Thread
+	var thread = eval(source);
+	
+	// start Thread
+	thread.start();
+	
+	</script>
+</body>
 </html>

@@ -16,14 +16,11 @@ var Thread = (function () {
         this.interval = setInterval(function () {
             _this.run();
         }, this.priority);
-        console.log("Thread start called " + this.interval);
     };
     Thread.prototype.stop = function () {
-        console.log("Thread stop called " + this.interval);
         clearInterval(this.interval);
     };
     Thread.prototype.run = function () {
-        console.log("Thread run called : " + this.interval);
         if(this.runnable.run() == 0) {
             this.stop();
         }

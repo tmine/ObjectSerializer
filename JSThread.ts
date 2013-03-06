@@ -17,16 +17,16 @@ class Thread{
 	
 	public start(){
 		this.interval = setInterval(() => { this.run(); }, this.priority);
-		console.log("Thread start called " + this.interval);
+		//console.log("Thread start called " + this.interval);
 	}
 	
 	public stop(){
-		console.log("Thread stop called " + this.interval);
+		//console.log("Thread stop called " + this.interval);
 		clearInterval(this.interval);
 	}
 	
 	public run(){
-		console.log("Thread run called : " + this.interval);
+		//console.log("Thread run called : " + this.interval);
 		if(this.runnable.run() == 0) this.stop();
 	}
 
