@@ -1,0 +1,36 @@
+<html>
+<head>
+	<script type="text/javascript" src="JSThread.js"></script>
+</head>
+
+<script>
+
+var MyRunnable = (function () {
+    function MyRunnable() {
+        this.i = 0;
+    }
+    MyRunnable.prototype.run = function () {
+        if(this.i >= 100) {
+            return 0;
+        }
+        console.log(this.i);
+        this.i++;
+    };
+    return MyRunnable;
+})();
+
+var runnable = new MyRunnable();
+var runnable2 = new MyRunnable();
+
+var thread = new Thread(runnable);
+var thread2 = new Thread(runnable2);
+thread2.setPriority(ThreadPriority.LOW);
+
+thread.start();
+thread2.start();
+
+setTimeout(function(){thread2.stop();}, 2000);
+
+</script>
+
+</html>
