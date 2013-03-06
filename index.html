@@ -1,39 +1,12 @@
 <html>
 <head>
 	<script type="text/javascript" src="JSThread.js"></script>
+	<script type="text/javascript" src="Serialization.js"></script>
 </head>
 <body>
 	<div id="0" style="border: solid 1px black; height: 20px; overflow: hidden;"></div>
 
 	<script>
-	
-	function isFunction(functionToCheck) {
-		var getType = {};
-		return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-	
-	function isObject(objToCheck) {
-		var getType = {};
-		return objToCheck && getType.toString.call(objToCheck) === '[object Object]';
-	}
-	
-	function getSourceOfObject(obj){
-		var string = "";
-		string += "(function(){ var obj = " + obj.constructor + "\n";
-		for(var c in obj){
-			if(isFunction(obj[c])){
-				string += "obj." + c + " = " + obj[c] + ";\n";
-			} else if(isObject(obj[c])){
-				string += "obj." + c + " = " + getSourceOfObject(obj[c]) + ";\n";
-			} else {
-				string += "obj." + c + " = " + obj[c] + ";\n";
-			}
-		}
-		string += "return obj;})();";
-		return string;
-	}
-	
-
 	
 	var MyRunnable = (function () {
 	    function MyRunnable() {
