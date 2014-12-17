@@ -11,8 +11,12 @@ var ObjectSerializer = (function () {
     ObjectSerializer.deserialize = function (str) {
         return JSON.parse(str, function (key, value) {
             if (typeof value === "string" && value.indexOf("function") == 0) {
-                var function_body = value.replace(" ", "").replace("function()", "");
-                return new Function(function_body);
+                var function_name = value.substring(value.indexOf(" ")+1, value.indexOf("("));
+                value = value.replace(" ", "");
+                var arguments = value.substring(value.indexOf("(")+1, value.indexOf(")")).split(",");
+                var function_body = value.replace("function"+function_name+"("+arguments+")", "");
+                arguments.push(function_body);
+                return Function.apply(null, arguments);
             }
             return value;
         });
@@ -23,8 +27,8 @@ var ObjectSerializer = (function () {
 
 var task = {
     i: 0,
-    run: function(){
-        for(; this.i<10; this.i++){
+    run: function(max){
+        for(; this.i<max; this.i++){
             console.log(this.i);
         }
     }
@@ -32,4 +36,4 @@ var task = {
 
 var serialized = ObjectSerializer.serialize(task);
 var deserialized = ObjectSerializer.deserialize(serialized);
-deserialized.run();
+deserialized.run(100);
