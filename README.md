@@ -1,6 +1,16 @@
-JSThread
-========
+# ObjectSerializer
 
-Javascript Lib for threading
+ObjectSerializer serializes and deserializes Javascript Objects. 
+These Objects CAN contain functions, the code of these functions will be available after deserialization.
 
-=> See My new tscLibrary for better implementation of Threading in Javascript
+## Methods
+
+### serialize(obj)
+obj: Object to serialize
+
+return: String representation of obj
+
+### deserialize(str)
+str: String representation of obj
+
+return: Object
