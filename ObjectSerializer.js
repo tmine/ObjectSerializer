@@ -7,8 +7,7 @@ var ObjectSerializer = (function () {
             for(var key in obj) obj[key] = obj[key];
         }
         return JSON.stringify(obj, function (key, value) {
-            if (typeof value === "function")
-                return value.toString();
+            if (typeof value === "function") return value.toString();
             return value;
         });
     };

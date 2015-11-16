@@ -97,7 +97,7 @@ var tests = [
             test: function(obj){
                 return obj.greet && obj.greet() === t.greet();
             }
-        }
+        };
     })(),
     (function(){
         var t = new MyGreeter("Bob");
@@ -105,7 +105,7 @@ var tests = [
             test: function(obj){
                 return obj.greet && obj.greet() === t.greet();
             }
-        }
+        };
     })()
 ];
 // end TestCases
