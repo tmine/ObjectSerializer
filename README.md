@@ -5,8 +5,9 @@ These Objects CAN contain functions, the code of these functions will be availab
 
 ## Methods
 
-### serialize(obj)
+### serialize(obj, flatten)
 obj: Object to serialize
+flatten: boolean, true if obj should serialize inherited properties
 
 return: String representation of obj
 

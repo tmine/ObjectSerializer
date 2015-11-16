@@ -1,7 +1,11 @@
 var ObjectSerializer = (function () {
     function ObjectSerializer() {
     }
-    ObjectSerializer.serialize = function (obj) {
+    ObjectSerializer.serialize = function (obj, flatten) {
+        if(flatten && (typeof obj === "object" || typeof obj === "function")) {
+            obj = Object.create(obj);
+            for(var key in obj) obj[key] = obj[key];
+        }
         return JSON.stringify(obj, function (key, value) {
             if (typeof value === "function")
                 return value.toString();
@@ -13,10 +17,9 @@ var ObjectSerializer = (function () {
             if (typeof value === "string" && value.indexOf("function") == 0) {
                 var function_name = value.substring(value.indexOf(" ")+1, value.indexOf("("));
                 value = value.replace(" ", "");
-                var arguments = value.substring(value.indexOf("(")+1, value.indexOf(")")).split(",");
-                var function_body = value.replace("function"+function_name+"("+arguments+")", "");
-                arguments.push(function_body);
-                return Function.apply(null, arguments);
+                var args = value.substring(value.indexOf("(")+1, value.indexOf(")")).split(",");
+                args.push(value.replace("function"+function_name+"("+args+")", ""));
+                return Function.apply(null, args);
             }
             return value;
         });
